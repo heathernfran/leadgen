@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import './App.css';
-
+import React, { Component } from 'react'
+import _ from 'lodash'
+import moment from 'moment'
 import dataLeads from './data/leads.json'
+import './App.css'
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +13,14 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.setState({ dedup: dataLeads.leads })
+    // Reference for sorting by date, using lodash and momentjs
+    // https://thomaskekeisen.de/en/blog/array-date-sort-lodash-momentjs/
+    let sortedDates = _.sortBy(dataLeads.leads, (dateValue) =>
+      new moment(dateValue.date)).reverse()
+    this.setState({ dedup: sortedDates })
+  }
+
+  componentDidMount() {
   }
 
   render() {
