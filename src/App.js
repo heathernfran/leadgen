@@ -36,7 +36,13 @@ class App extends Component {
       return result
     }, {})
 
-    console.log(dups)
+    // Log number of duplicate occurrences
+    Object.keys(dups).forEach((val, key) => {
+      if (dups[val].length > 1) {
+        console.log(`Duplicates of ${val} found, ${dups[val].length}`)
+      }
+    })
+
   }
 
   render() {
