@@ -22,6 +22,21 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this._checkDups()
+  }
+
+  _checkDups(keyArg) {
+    let dedupArray = []
+    // Build array from inputted key (e.g. _id, email)
+    _.filter(this.state.dedup, (o) => dedupArray.push(o.keyArg || o.email))
+
+    // Find duplicates resulting from inputted key
+    let dups = _.reduce(dedupArray, (result, value, key) => {
+      (result[value] || (result[value] = [])).push(key)
+      return result
+    }, {})
+
+    console.log(dups)
   }
 
   render() {
