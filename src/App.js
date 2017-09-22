@@ -9,7 +9,9 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      dedup: []
+      dedup: [],
+      dupIds: [],
+      dupEmails: []
     }
   }
 
@@ -22,10 +24,17 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this._checkDups()
+    // Find duplicate values by key, create array of duplicates based on key.
+    // This will conditionally style duplicates in render().
+    let ids = _.filter(Object.keys(this.state.dedup), o => /_id/.test(o))
+    let emails = _.filter(Object.keys(this.state.dedup), o => /email/.test(o))
+    this.setState({
+      dupIds: this._checkDups(ids, []),
+      dupEmails: this._checkDups(emails, [])
+    })
   }
 
-  _checkDups(keyArg) {
+  _checkDups(keyArg, stateArray) {
     let dedupArray = []
     // Build array from inputted key (e.g. _id, email)
     _.filter(this.state.dedup, (o) => dedupArray.push(o.keyArg || o.email))
@@ -40,9 +49,10 @@ class App extends Component {
     Object.keys(dups).forEach((val, key) => {
       if (dups[val].length > 1) {
         console.log(`Duplicates of ${val} found, ${dups[val].length}`)
+        stateArray.push(val)
       }
     })
-
+    return stateArray
   }
 
   render() {
@@ -52,8 +62,8 @@ class App extends Component {
           return (
             <div key={uuid()}>
               <h1>{value.lastName}, {value.firstName}</h1>
-              <h2>{value._id}</h2>
-              <p>{value.email}</p>
+              <h2 className={this.state.dupIds.indexOf(value._id) > -1 ? 'duplicate' : ''}>{value._id}</h2>
+              <p className={this.state.dupEmails.indexOf(value.email) > -1 ? 'duplicate' : ''}>{value.email}</p>
               <span>{value.entryDate}</span>
             </div>
           )
