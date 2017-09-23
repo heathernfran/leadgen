@@ -37,7 +37,7 @@ class App extends Component {
   _checkDups(keyArg, stateArray) {
     let dedupArray = []
     // Build array from inputted key (e.g. _id, email)
-    _.filter(this.state.dedup, (o) => dedupArray.push(o.keyArg))
+    _.filter(this.state.dedup, (o) => dedupArray.push(o[keyArg]))
 
     // Find duplicates resulting from inputted key
     let dups = _.reduce(dedupArray, (result, value, key) => {
