@@ -81,14 +81,13 @@ class App extends Component {
   }
 
   render() {
-    let idCounter = 0
     return (
       <div className="App">
         {this.state.dedup.map((value) => {
           return (
             <div key={uuid()}>
               <h1>{value.lastName}, {value.firstName}</h1>
-              <h2 className={this._excludeFirstDup(idCounter) ? 'duplicate' : ''}>{value._id}</h2>
+              <h2 className={this.state.dupIds.indexOf(value._id) > -1 ? 'duplicate' : ''}>{value._id}</h2>
               <p className={this.state.dupEmails.indexOf(value.email) > -1 ? 'duplicate' : ''}>{value.email}</p>
               <span>{value.entryDate}</span>
             </div>
