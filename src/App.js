@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 import uuid from 'uuid'
+import jsonfile from 'jsonfile'
 import dataLeads from './data/leads.json'
 import './App.css'
 
@@ -21,6 +22,8 @@ class App extends Component {
     let sortedDates = _.sortBy(dataLeads.leads, (dateValue) =>
       new moment(dateValue.date)).reverse()
     this.setState({ dedup: sortedDates })
+
+    this._writeJson(this.state.dedup)
   }
 
   componentDidMount() {
@@ -53,6 +56,24 @@ class App extends Component {
       }
     })
     return stateArray
+  }
+
+  _writeJson(array) {
+    return array.forEach((obj) => {
+      jsonfile.writeFile(
+        './data/results.json',
+        {
+          "_id": obj["_id"],
+          "email": obj["email"],
+          "firstName": obj["firstName"],
+          "lastName": obj["lastName"],
+          "address": obj["address"],
+          "entryDate": obj["entryDate"]
+        },
+        {flag: 'a'},
+        (err) => console.log(`Error writing json: ${err}`)
+      )
+    })
   }
 
   _excludeFirstDup(counter) {
