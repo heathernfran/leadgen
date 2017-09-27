@@ -29,11 +29,11 @@ class App extends Component {
   componentDidMount() {
     // Find duplicate values by key, create array of duplicates based on key.
     // This will conditionally style duplicates in render().
-    let ids = _.findKey(_.head(this.state.dedup), o => o.match(/[a-z0-9]{18}/))
-    let emails = _.findKey(_.head(this.state.dedup), o => o.match(/@/))
+    let id = _.findKey(_.head(this.state.dedup), o => o.match(/[a-z0-9]{18}/))
+    let email = _.findKey(_.head(this.state.dedup), o => o.match(/@/))
     this.setState({
-      dupIds: this._checkDups(ids, []),
-      dupEmails: this._checkDups(emails, [])
+      dupIds: this._checkDups(id, []),
+      dupEmails: this._checkDups(email, [])
     })
   }
 
